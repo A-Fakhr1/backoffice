@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('coas', function (Blueprint $table) {
             $table->id();
-            $table->string('akun_no')->unique()->nullable();
+            $table->string('akun_coa')->unique()->nullable();
             $table->string('nama_coa');
             $table->string('tipe');
             $table->string('dept');

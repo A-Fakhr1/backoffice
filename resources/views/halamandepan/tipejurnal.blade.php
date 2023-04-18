@@ -97,7 +97,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th>No</th>
                                                 <th>Tipe Jurnal</th>
                                                 <th>Deskripsi</th>
-                                                <th style="text-align: center">Aksi</th>
+                                                {{-- <th style="text-align: center">Aksi</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -111,12 +111,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         class="btn btn-block bg-gradient-success btn-xs">
                                                         <i class="fas fa-edit"></i> Ubah</button>
                                                 </td> --}}
-                                                <td>
+                                                {{-- hapus --}}
+                                                {{-- <td>
                                                     <button type="button" data-toggle="modal"
                                                         data-target="#modalHapus{{ $item->id }}"
                                                         class="btn btn-block bg-gradient-danger btn-xs">
                                                         <i class="fas fa-trash"></i> Hapus</button>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                             {{-- modal delete --}}
                                             <div class="modal fade" id="modalHapus{{ $item->id }}" tabindex="-1"
@@ -148,10 +149,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <!-- /.card-body -->
                                 </div>
                                 <!-- /button -->
-                                <div class="card-footer">
+                                {{-- <div class="card-footer">
                                     <button type="submit" data-toggle="modal" data-target="#modalTambahjurnal"
                                         class="btn btn-primary">Tambah</button>
-                                </div>
+                                </div> --}}
                                 <!-- /.card -->
                             </div>
                             <!-- /.col -->

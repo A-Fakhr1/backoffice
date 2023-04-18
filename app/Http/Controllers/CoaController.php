@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coa;
+use App\Models\Saldocoa;
 use Illuminate\Http\Request;
 
 class CoaController extends Controller
@@ -13,7 +14,8 @@ class CoaController extends Controller
     public function index()
     {
         //
-        $dtCoa=Coa::all();
+        $dtCoa=Coa::with('saldoCoa')->get();
+        // return dd($dtCoa);
         return view('halamandepan.akuncoa',compact('dtCoa'));
     }
 
@@ -39,18 +41,28 @@ class CoaController extends Controller
         ]);
 
 
-
         $coaa = new Coa ;
 
+        $lastCoa = Coa::max('akun_coa');
+
+        $coaa->akun_coa = strval(rand(1, 20));
         $coaa -> nama_coa = $request->input('coaname');
         $coaa -> tipe = $request->input('tipe');
         $coaa -> dept = $request->input('dept');
 
         $coaa -> save();
-        return redirect('/akuncoa')->with([
-            'status' => 'success',
-            'message' => 'Data Berhasil di Simpan',
-        ]);
+
+        if($coaa) {
+            Saldocoa::create([
+                'saldo_awal' => 0,
+                'coa_akun' => $coaa->akun_coa
+            ]);
+
+            return redirect('/akuncoa')->with([
+                'status' => 'success',
+                'message' => 'Data Berhasil di Simpan',
+            ]);
+        }
     }
 
     /**
@@ -64,12 +76,13 @@ class CoaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-        $coaa = Coa::where('id',$id)->first();
-        return view('halamandepan.akuncoa-edit',compact('coaa'));
-    }
+
+     // public function edit(string $id)
+    // {
+    //     //
+    //     $coaa = Coa::where('id',$id)->first();
+    //     return view('halamandepan.akuncoa-edit',compact('coaa'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -77,27 +90,33 @@ class CoaController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $haveSaldo = Saldocoa::all();
         $coaa = Coa::where('id',$id)->first();
-        $coaa -> nama_coa = $request->input('coaname');
-        $coaa -> tipe = $request->input('tipe');
-        $coaa -> dept = $request->input('dept');
+        $coaa->akun_coa =$request->akun_coa;
+        $coaa -> nama_coa = $request->nama_coa;
+        $coaa -> tipe = $request->tipe;
+        $coaa -> dept = $request->dept;
+
 
         $coaa -> save();
-        return redirect('/akuncoa')->with([
+        return response()->json([
             'status' => 'success',
             'message' => 'Data Berhasil di Ubah',
+            'saldoCoa' => $haveSaldo
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    // string $id
+    public function destroy( $id)
     {
         //
-        $data=Coa::findOrFail($id);
+        $coa=Coa::findOrFail($id);
         // dd($data);
-        $data->delete();
+        $coa->saldoCoa()->delete();
+        $coa->delete();
         return redirect()->back()->with([
             'status' => 'success',
             'message' => 'Data Berhasil di Hapus',

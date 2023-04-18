@@ -56,6 +56,8 @@ Route::middleware(['auth'])->group(function () {
 
 // pengolahan data user
 route::get('/muser', [UserController::class, 'index'])->name('User');
+route::post('/tambahmuser', [UserController::class, 'store'])->name('tambahuser');
+route::delete('/muser/{id}', [UserController::class, 'destroy'])->name('hapususer');
 
 // akun coa
 route::get('/akuncoa', [CoaController::class, 'index'])->name('akuncoa');
@@ -66,7 +68,7 @@ route::delete('/akuncoa/{id}', [CoaController::class, 'destroy'])->name('hapusco
 
 //saldocoa
 route::get('/saldocoa', [SaldocoaController::class, 'index'])->name('saldocoa');
-route::post('updatesaldocoa/{id}',[SaldocoaController::class,'update'])->name('updatesaldocoa');
+route::post('updatesaldocoa/{akun_coa}',[SaldocoaController::class,'update'])->name('updatesaldocoa');
 
 // akun company
 route::get('/company', [CompanyController::class, 'index'])->name('listcompany');

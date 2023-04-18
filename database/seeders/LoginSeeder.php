@@ -18,7 +18,7 @@ class LoginSeeder extends Seeder
         'username'=>'admin',
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'level'=>'admin',
-        'id_comp'=>'1',
+        'id_comp'=>'11111',
         ]);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,8 +15,9 @@ class UserController extends Controller
     public function index()
     {
         //
-        $dtUser=User::all();
-        return view('halamandepan.muser',compact('dtUser'));
+        $dtUser=User::get();
+        $dtComp=Company::get();
+        return view('halamandepan.muser',compact('dtUser','dtComp'));
     }
 
     /**
@@ -31,6 +34,22 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        $useer = new User();
+        $useer -> username = $request->input('username');
+        // $passwordd = Str::random(8);
+        $passwordd = 'password' ;
+        $newpasswordd = Hash::make($passwordd);
+        $useer -> password = $newpasswordd ;
+        $useer -> level = $request->input('level');
+        $useer -> id_comp = $request->input('datacomp');
+
+
+        $useer -> save();
+        return redirect('/muser')->with([
+            'status' => 'success',
+            'message' => 'Data Berhasil di Simpan',
+        ]);
+
     }
 
     /**
@@ -63,5 +82,11 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+        $data=User::findOrFail($id);
+        $data->delete();
+        return redirect()->back()->with([
+            'status' => 'success',
+            'message' => 'Data Berhasil di Hapus',
+        ]);
     }
 }

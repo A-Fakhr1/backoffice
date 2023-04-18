@@ -9,12 +9,13 @@ class Saldocoa extends Model
 {
     use HasFactory;
 
+    protected $table="saldocoas";
     protected $primaryKey= "id";
     protected $fillable= [
-        'saldo_awal','anggaran','target','tanggal','no_coa'
+        'saldo_awal','anggaran','target','tanggal','coa_akun'
     ];
 
     public function coa() {
-    return $this->hasMany(Coa::class, 'akun_no', 'no_coa');
+    return $this->hasMany(Coa::class,'akun_coa','coa_akun');
 }
 }

@@ -57,13 +57,16 @@ class SaldocoaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,$coa_akun)
     {
         //
-        $dtSaldo = Coa::where('id',$id)->first();
+        //  $dtSaldo = Coa::where('id',$id);
+        // Mengambil data saldo berdasarkan field kode pada tabel lain
+        $dtSaldo=Saldocoa::where('coa_akun',$coa_akun)->first();
+
         // dd($dtSaldo);
         $dtSaldo -> saldo_awal = $request->input('saldoawl');
-        $dtSaldo -> tanggal = $request->input('tanggl');
+        // $dtSaldo -> tanggal = $request->input('tanggl');
 
         $dtSaldo -> save();
         return redirect('/saldocoa')->with([

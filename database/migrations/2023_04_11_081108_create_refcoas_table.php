@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('refcoas', function (Blueprint $table) {
             $table->id();
-            $table->string('id_comp')->unique();
-            $table->string('nama_company');
+            $table->string('kd_indukcoa');
+            $table->string('name_induk_coa');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('refcoas');
     }
 };

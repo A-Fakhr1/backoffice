@@ -35,14 +35,15 @@ class CompanyController extends Controller
         $inputt = $request->input('namacom');
         $char_left = substr($inputt,0,4);
         // membuat kode penomoran
-        $data = DB::table('companies')->get();
-        $count = count($data);
-        $test = $count;
+        // $data = DB::table('companies')->get();
+        // $count = count($data);
+        // $test = $count;
         // endscript penomoran
-
+        $kode = rand(10000, 99999);
+        $kode = sprintf("%05d", $kode);
 
         $comm = new Company() ;
-        $comm -> id_comp = $char_left.$test ;
+        $comm -> id_comp = $kode ;
         $comm -> nama_company = $request->input('namacom');
 
 

@@ -46,6 +46,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="card-header">
                                     <h3 class="card-title">Akun Pengguna</h3>
                                 </div>
+                                @if(Session::has('status'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <ul>
+                                        <li>
+                                            <strong> {{Session::get('message')}}</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @endif
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
@@ -55,6 +64,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th>Username</th>
                                                 <th>Level</th>
                                                 <th>Company ID</th>
+                                                <th>Dibuat</th>
                                                 <th colspan="2" style="text-align: center">Aksi</th>
                                             </tr>
                                         </thead>
@@ -65,6 +75,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <td>{{$user->username}}</td>
                                                 <td>{{$user->level}}</td>
                                                 <td>{{$user->id_comp}}</td>
+                                                <td>{{$user->created_at}}</td>
                                                 <td>
                                                     <button type="button"
                                                         class="btn btn-block bg-gradient-success btn-xs"><i
@@ -72,13 +83,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </td>
                                                 <td>
                                                     <button type="button"
-                                                        class="btn btn-block bg-gradient-danger btn-xs"><i
-                                                            class="fas fa-trash"></i> Hapus</button>
+                                                        class="btn btn-block bg-gradient-danger btn-xs"
+                                                        data-toggle="modal" data-target="#modalHapus{{ $user->id }}">
+                                                        <i class="fas fa-trash"></i> Hapus</button>
                                                 </td>
                                             </tr>
 
                                             </tr>
                                             </tfoot>
+                                            {{-- modal delete --}}
+                                            <div class="modal fade" id="modalHapus{{ $user->id }}" tabindex="-1"
+                                                aria-labelledby="modalHapus" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <h5 class="text-center">Apakah anda yakin ingin menghapus
+                                                                data <b>{{ $user->username }}</b> ini ? </h5>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="{{route('hapususer',$user->id)}}"
+                                                                method="post">
+                                                                @method('delete')
+                                                                {{ csrf_field() }}
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Hapus</button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Batal</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{-- end modaldelete --}}
                                             @endforeach
                                     </table>
                                 </div>
@@ -104,7 +140,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <h5 class="text-center">Tambah Data Pengguna / Akun </h5>
                             </div>
                             <div class="modal-body">
-                                <form action="" method="post">
+                                <form action="{{ route('tambahuser') }}" method="post">
 
                                     {{ csrf_field() }}
                                     <div class="form-group">
@@ -113,14 +149,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             class="form-control" placeholder="Username">
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Departemen</label>
+                                        <label for="">Departemen ( Level )</label>
                                         <input type="text" id="level" name="level" autocomplete="off"
                                             class="form-control" placeholder="Nama Departemen">
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Company ID</label>
-                                        <input type="text" id="idcomp" name="idcomp" autocomplete="off"
-                                            class="form-control" placeholder="ID Company">
+                                        <label for="datacomp">Company ID</label>
+                                        <select name="datacomp" id="datacomp" class="form-control">
+                                            <option value="" disabled="disabled" selected> Pilih Company </option>
+                                            @foreach ( $dtComp as $comp )
+                                            <option value="{{ $comp->id_comp }}">{{ $comp->id_comp }} -
+                                                {{ $comp->nama_company }}</option>
+                                            @endforeach
+
+                                        </select>
+                                        {{-- <input type="text" id="idcomp" name="idcomp" autocomplete="off"
+                                            class="form-control" placeholder="ID Company"> --}}
                                     </div>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

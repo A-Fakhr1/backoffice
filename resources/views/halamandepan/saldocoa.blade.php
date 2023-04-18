@@ -104,9 +104,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <tr>
                                                 <th>No</th>
                                                 <th>Kode COA</th>
-                                                <th>Dect COA</th>
+                                                <th>Nama COA</th>
                                                 <th>Saldo Awal</th>
-                                                <th>Tanggal</th>
+                                                {{-- <th>Tanggal</th> --}}
                                                 {{-- <th>Target</th>
                                                 <th>Normal</th> --}}
                                                 <th colspan="2" style="text-align: center">Aksi</th>
@@ -121,7 +121,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <div class="modal-header">
                                                         <h5 class="text-center">Edit Data Saldo Awal</h5>
                                                     </div>
-                                                    <form action="{{ route('updatesaldocoa',$coa->id) }}" method="post">
+                                                    <form action="{{ route('updatesaldocoa',$coa->akun_coa) }}"
+                                                        method="post">
                                                         <div class="modal-body">
 
                                                             {{ csrf_field() }}
@@ -130,7 +131,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 <input type="text" id="saldoawl" name="saldoawl"
                                                                     autocomplete="off" class="form-control" required
                                                                     placeholder="Saldo Awal"
-                                                                    value="{{ $coa->saldoCoa->saldo_awal }}">
+                                                                    value="{{ $coa->saldoCoa == null ? 'null' : $coa->saldoCoa->saldo_awal}}">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="">Tanggal</label>
@@ -151,10 +152,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <tbody>
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $coa->akun_no }}</td>
+                                                <td>{{ $coa->akun_coa }}</td>
                                                 <td>{{ $coa->nama_coa }}</td>
-                                                <td>Rp. {{ $coa->saldoCoa->saldo_awal }}</td>
-                                                <td>{{ $coa->saldoCoa->tanggal }}</td>
+                                                <td> {{$coa->saldoCoa ? 'Rp. ' .
+                                                    number_format($coa->saldoCoa->saldo_awal,0,',','.') : '' }}
+                                                </td>
+                                                {{-- <td>{{ $coa->saldoCoa->tanggal }}</td> --}}
                                                 {{-- <td>-</td>
                                                 <td>-</td> --}}
                                                 <td>

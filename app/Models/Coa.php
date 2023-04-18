@@ -9,12 +9,13 @@ class Coa extends Model
 {
     use HasFactory;
 
+    protected $table = "coas";
     protected $primaryKey= "id";
     protected $fillable= [
-        'akun_no','nama_coa','tipe','dept','id_comp'
+        'akun_coa','nama_coa','tipe','dept','id_comp'
     ];
 
     public function saldoCoa() {
-    return $this->belongsTo(Saldocoa::class, 'akun_no','no_coa');
+    return $this->belongsTo(Saldocoa::class,'akun_coa','coa_akun');
     }
 }

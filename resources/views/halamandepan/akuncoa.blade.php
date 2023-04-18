@@ -147,27 +147,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <tbody>
                                             @foreach($dtCoa as $item)
 
-                                            <tr>
+                                            <tr data-id={{ $item->id }}>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td>{{$item->akun_no}}</td>
-                                                <td>{{$item->nama_coa}}</td>
-                                                <td>{{$item->tipe}}</td>
-                                                <td>{{$item->dept}}</td>
-                                                <td>
-                                                    {{-- <a href="{{ url($item->id,'editcoa') }}">
+                                                <td contenteditable="{{ $item->saldoCoa == null ? false : true }}">
+                                                    {{$item->akun_coa}}</td>
+                                                <td
+                                                    contenteditable="{{ $item->saldoCoa->saldo_awal== 0 ? false : true }}">
+                                                    {{$item->nama_coa}}</td>
+                                                <td contenteditable>{{$item->tipe}}</td>
+                                                <td contenteditable>{{$item->dept}}</td>
+                                                {{-- <td>
+                                                    <a href="{{ url($item->id,'editcoa') }}">
                                                         <button type="button"
                                                             class="btn btn-block bg-gradient-success btn-xs">Ubah</button>
-                                                    </a> --}}
+                                                    </a>
                                                     <button type="button"
                                                         class="btn btn-block bg-gradient-success btn-xs"
                                                         data-toggle="modal" data-target="#modalEditcoa{{ $item->id }}">
                                                         <i class="fas fa-edit"></i> Ubah</button>
-                                                </td>
+                                                </td>--}}
                                                 <td>
                                                     <button type="button"
                                                         class="btn btn-block bg-gradient-danger btn-xs"
                                                         data-toggle="modal" data-target="#modalHapus{{ $item->id }}">
                                                         <i class="fas fa-trash"></i> Hapus</button>
+                                                </td>
+                                                <td> <button type="button"
+                                                        class="btn btn-block bg-gradient-success btn-xs"
+                                                        onclick="saveData({{ $item->id }})">
+                                                        <i class="fas fa-edit"></i> Edit </button>
                                                 </td>
                                             </tr>
                                             {{-- modal delete --}}
@@ -238,7 +246,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
+    <script>
+        function saveData(id) {
+        var akunCoa = document.querySelector("tr[data-id='" + id + "'] td:nth-child(2)").innerText;
+        var namaCoa = document.querySelector("tr[data-id='" + id + "'] td:nth-child(3)").innerText;
+        var type = document.querySelector("tr[data-id='" + id + "'] td:nth-child(4)").innerText;
+        var departemen = document.querySelector("tr[data-id='" + id + "'] td:nth-child(5)").innerText;
+
+        // console.log({akunCoa, namaCoa, type, departemen})
+
+        var data = {
+        _token: '{{ csrf_token() }}',
+        _method: 'POST',
+        akun_coa: akunCoa,
+        nama_coa: namaCoa,
+        tipe: type,
+        dept: departemen
+        };
+
+        // console.log(data)
+
+        $.ajax({
+        url: '/updatecoa/' + id,
+        type: 'POST',
+        async: false,
+        data: data,
+        success: function(data) {
+        // tampilkan pesan sukses atau redirect ke halaman lain
+        alert('Data Successfully updated')
+        console.log(data)
+        },
+        error: function(xhr) {
+        // tampilkan pesan error
+        console.log(xhr)
+        },
+        });
+        }
+    </script>
     @include('template.script')
+
 
 </body>
 

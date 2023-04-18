@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('saldocoas', function (Blueprint $table) {
             $table->id();
-            $table->string('saldo_awal')->nullable();
-            $table->string('anggaran')->nullable();
-            $table->string('target')->nullable();
+            $table->integer('saldo_awal')->nullable();
+            $table->integer('anggaran')->nullable();
+            $table->integer('target')->nullable();
             $table->date('tanggal')->nullable();
-            $table->string('no_coa');
+            $table->string('coa_akun');
             $table->timestamps();
         });
     }
