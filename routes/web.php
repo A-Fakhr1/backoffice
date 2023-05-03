@@ -4,12 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SaldocoaController;
 use App\Http\Controllers\StrukturController;
+use App\Http\Controllers\JurnalUmumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +25,12 @@ use App\Http\Controllers\StrukturController;
 */
 
 // http://127.0.0.1:8000/ ===> view welcome
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // http://127.0.0.1:8000/login ===> view login
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('pengguna.login');
 })->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
@@ -81,6 +83,13 @@ route::get('/tipejurnal', [JurnalController::class, 'index'])->name('tipejurnal'
 route::post('/tambahtipejurnal', [JurnalController::class, 'store'])->name('tambahtipejurnal');
 route::delete('/tipejurnal/{id}', [JurnalController::class, 'destroy'])->name('hapustipejurnal');
 
+// jurnal umum
+Route::get('/jurnalumum',[JurnalUmumController::class,'index'])->name('jurnalumum');
+
+//import data excel
+Route::post('/import', [ImportController::class,'import'])->name('import');
+
+
 Route::get('/budget', function () {
     return view('halamandepan.budget');
 });
@@ -99,10 +108,6 @@ Route::get('/editjurnal', function () {
 
 Route::get('/historyacc', function () {
     return view('halamandepan.historyacc');
-});
-
-Route::get('/jurnalumum', function () {
-    return view('halamandepan.jurnalumum');
 });
 
 Route::get('/listjurnal', function () {

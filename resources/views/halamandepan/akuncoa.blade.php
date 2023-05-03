@@ -99,6 +99,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
             @endforeach
             {{--end modal Edit Coa --}}
 
+            {{-- modal import Akun Coa --}}
+            <div class="modal fade" id="modalImportcoa" tabindex="-1" aria-labelledby="modalImportcoa"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="text-center">Import Data Akun COA</h5>
+                        </div>
+                        <form action="{{ route('import') }}" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="">Import File </label>
+                                    <input type="file" id="file" name="file" class="form-control-file">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Import Data</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{--end modal import Coa --}}
+
             <!-- Main content -->
             <section class="content" style="margin-top: 50px; margin-bottom: 50px">
                 <div class="container-fluid">
@@ -122,6 +147,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="card-header">
                                     <h3 class="card-title">COA</h3>
                                 </div>
+                                <div>
+                                    <!-- /button import -->
+                                    <div class="card-footer">
+                                        <button type="button" data-toggle="modal" data-target="#modalImportcoa"
+                                            class="btn btn-primary">Import Data Coa</button>
+                                    </div>
+                                </div>
+
                                 <!-- /.card-header -->
                                 @if(Session::has('status'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -151,8 +184,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <td>{{$loop->iteration}}</td>
                                                 <td contenteditable="{{ $item->saldoCoa == null ? false : true }}">
                                                     {{$item->akun_coa}}</td>
-                                                <td
-                                                    contenteditable="{{ $item->saldoCoa->saldo_awal== 0 ? false : true }}">
+                                                <td contenteditable>
                                                     {{$item->nama_coa}}</td>
                                                 <td contenteditable>{{$item->tipe}}</td>
                                                 <td contenteditable>{{$item->dept}}</td>
@@ -167,10 +199,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <i class="fas fa-edit"></i> Ubah</button>
                                                 </td>--}}
                                                 <td>
+                                                    @if($item->saldoCoa->saldo_awal == 0 )
                                                     <button type="button"
                                                         class="btn btn-block bg-gradient-danger btn-xs"
                                                         data-toggle="modal" data-target="#modalHapus{{ $item->id }}">
                                                         <i class="fas fa-trash"></i> Hapus</button>
+                                                    @endif
                                                 </td>
                                                 <td> <button type="button"
                                                         class="btn btn-block bg-gradient-success btn-xs"

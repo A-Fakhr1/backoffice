@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('akun_coa')->unique()->nullable();
             $table->string('nama_coa');
-            $table->string('tipe');
-            $table->string('dept');
+            $table->string('tipe')->nullable();
+            $table->string('dept')->nullable();
             $table->string('id_comp')->nullable();
             $table->timestamps();
         });
