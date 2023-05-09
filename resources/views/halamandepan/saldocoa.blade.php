@@ -5,6 +5,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
 @include('template.head',['title'=>'Saldo Awal COA'])
+<style>
+    td.saldo-awal {
+        text-align: right;
+    }
+
+    td.saldo-awal:before {
+        content: "Rp. ";
+        float: left;
+    }
+
+    th.total-saldo {
+        text-align: right;
+    }
+
+    th.total-saldo:before {
+        content: "Rp. ";
+        float: left;
+    }
+</style>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -99,7 +118,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             </div>
                                         </div>
                                     </div>
-                                    <table id="example1" class="table table-bordered table-striped">
+                                    <table id="saldoawall" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -131,14 +150,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 <input type="text" id="saldoawl" name="saldoawl"
                                                                     autocomplete="off" class="form-control" required
                                                                     placeholder="Saldo Awal"
-                                                                    value="{{ $coa->saldoCoa == null ? 'null' : $coa->saldoCoa->saldo_awal}}">
+                                                                    value="{{ $coa->saldoCoa == null ? 'null' : $coa->saldoCoa->saldo_awal}}"
+                                                                    onfocus="removeZero(this)" onblur="addZero(this)">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="">Tanggal</label>
-                                                                <input type="text" id="tanggl" name="tanggl"
+                                                                <input type="date" id="tanggl" name="tanggl"
                                                                     class="form-control" autocomplete="off"
-                                                                    placeholder="Tanggal" value="">
+                                                                    placeholder="Tanggal">
                                                             </div>
+
+
                                                             <button type="submit"
                                                                 class="btn btn-primary">Simpan</button>
                                                             <button type="button" class="btn btn-secondary"
@@ -148,13 +170,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 </div>
                                             </div>
                                         </div>
+                                        <script>
+                                            function removeZero(input) {
+                                            if (input.value === '0') {
+                                            input.value = '';
+                                            }
+                                            }
+
+                                            function addZero(input) {
+                                            if (input.value === '') {
+                                            input.value = '0';
+                                            }
+                                            }
+                                        </script>
                                         {{--end modal Edit Saldo awal --}}
                                         <tbody>
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $coa->akun_coa }}</td>
                                                 <td>{{ $coa->nama_coa }}</td>
-                                                <td> {{$coa->saldoCoa ? 'Rp. ' .
+                                                <td class="saldo-awal "> {{$coa->saldoCoa ?
+                                                    // 'Rp. ' .
                                                     number_format($coa->saldoCoa->saldo_awal,0,',','.') : '' }}
                                                 </td>
                                                 {{-- <td>{{ $coa->saldoCoa->tanggal }}</td> --}}
@@ -172,6 +208,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             </tr>
                                             </tfoot>
                                             @endforeach
+                                            <tr>
+                                                <th colspan="3" style="text-align: center"> Saldo </th>
+                                                <th id="total-saldo" class="total-saldo"> </th>
+                                            </tr>
                                     </table>
                                     <!-- /.card-body -->
                                 </div>
@@ -214,3 +254,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </body>
 
 </html>
+<script>
+    // // mengambil semua elemen td dengan kelas saldo-awal
+    // const saldoAwalElements = document.querySelectorAll('td.saldo-awal');
+    // let totalSaldo = 0;
+    
+    // // menjumlahkan nilai dari setiap elemen td saldo-awal
+    // saldoAwalElements.forEach((saldoAwalElement) => {
+    // const saldoAwal = saldoAwalElement.textContent.replace(/\D/g, ''); // menghapus karakter selain angka
+    // totalSaldo += parseInt(saldoAwal);
+    // });
+    
+    // // menampilkan hasil penjumlahan pada elemen th dengan id total-saldo
+    // document.getElementById('total-saldo').textContent = `Rp. ${totalSaldo.toLocaleString('id-ID')}`;
+
+    // cara 2 untuk menghitung tabel jika - akan dikurangi
+// const saldoAwalElements = document.querySelectorAll('td.saldo-awal');
+// let positiveTotal = 0;
+// let negativeTotal = 0;
+
+// // menjumlahkan nilai dari setiap elemen td saldo-awal
+// saldoAwalElements.forEach((saldoAwalElement) => {
+// const saldoAwal = saldoAwalElement.textContent.replace(/\D/g, ''); // menghapus karakter selain angka
+// if (saldoAwalElement.textContent.includes('-')) {
+// negativeTotal += parseInt(saldoAwal); // menambahkan nilai yang bertanda "-" ke negativeTotal
+// } else {
+// positiveTotal += parseInt(saldoAwal); // menambahkan nilai ke positiveTotal
+// }
+// });
+
+// // menghitung total saldo dengan memperhitungkan tanda "-"
+// const totalSaldo = positiveTotal - negativeTotal;
+
+// // menampilkan hasil penjumlahan pada elemen th dengan id total-saldo
+// document.getElementById('total-saldo').textContent = `Rp. ${totalSaldo.toLocaleString('id-ID')}`;
+// cara 3
+const saldoAwalElements = document.querySelectorAll('td.saldo-awal');
+let totalSaldo = 0;
+
+// menjumlahkan nilai dari setiap elemen td saldo-awal
+saldoAwalElements.forEach((saldoAwalElement) => {
+const saldoAwal = saldoAwalElement.textContent.replace(/\D/g, ''); // menghapus karakter selain angka
+if (saldoAwalElement.textContent.includes('-')) {
+totalSaldo -= parseInt(saldoAwal); // menggunakan operator pengurangan
+} else {
+totalSaldo += parseInt(saldoAwal); // menggunakan operator penjumlahan
+}
+});
+
+// menampilkan hasil penjumlahan pada elemen th dengan id total-saldo
+document.getElementById('total-saldo').textContent = ` ${totalSaldo.toLocaleString('id-ID')}`;
+</script>
