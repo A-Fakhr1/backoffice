@@ -80,7 +80,7 @@ class StrukturController extends Controller
         $depart -> deskripsi = $request->input('deskripsi');
 
         $depart -> save();
-        return redirect('/struktur')->with([
+        return redirect('/administrator/struktur')->with([
             'status' => 'success',
             'message' => 'Data Berhasil di Ubah',
         ]);

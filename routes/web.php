@@ -12,6 +12,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SaldocoaController;
 use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\JurnalUmumController;
+use App\Http\Controllers\PembayaranLainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ Route::get('/beranda', function () {
 // Route::get('/struktur', function () {
 //     return view('halamandepan.struktur');
 // });
-route::get('/struktur', [StrukturController::class, 'index'])->name('struktur');
+route::get('/administrator/struktur', [StrukturController::class, 'index'])->name('struktur');
 route::get('/strukturcreate', [StrukturController::class, 'create'])->name('strukturcreate');
 route::post('/struktursimpan', [StrukturController::class, 'store'])->name('struktursimpan');
 route::delete('/struktur/{id}', [StrukturController::class, 'destroy'])->name('strukturhapus');
@@ -85,6 +86,10 @@ route::delete('/tipejurnal/{id}', [JurnalController::class, 'destroy'])->name('h
 
 // jurnal umum
 Route::get('/jurnalumum',[JurnalUmumController::class,'index'])->name('jurnalumum');
+route::post('/jurnalumum', [JurnalUmumController::class, 'store'])->name('tambahjurnal');
+
+//pembayaranlain
+route::get('/pembayaran-lain', [PembayaranLainController::class, 'index'])->name('pembayaran');
 
 //import data excel
 Route::post('/import', [ImportController::class,'import'])->name('import');

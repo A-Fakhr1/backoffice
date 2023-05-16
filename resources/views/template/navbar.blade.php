@@ -99,6 +99,10 @@ width: -webkit-fill-available; ">
                                 <li>
                                     <a tabindex="-1" href="/jurnalumum" class="dropdown-item">Jurnal Umum</a>
                                 </li>
+                                <li>
+                                    <a tabindex="-1" href="{{route('pembayaran')}}" class="dropdown-item">Pembayaran
+                                        Lain</a>
+                                </li>
 
                                 <!-- Level three dropdown-->
                                 <li class="dropdown-submenu">

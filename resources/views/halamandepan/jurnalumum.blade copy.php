@@ -51,13 +51,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-8">
-                      <form class="form-horizontal" id="form1" method="POST" action="{{route('tambahjurnal')}}">
+                      <form class="form-horizontal">
                         <div class="card-body">
                           <div class="form-group row">
-                            <label for="tipe_jurnal" class="col-sm-4 col-form-label">Jurnal</label>
+                            <label for="" class="col-sm-4 col-form-label">Jurnal</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="kode_jurnal" name="kode_jurnal"
-                                value="{{$kode_jurnal_baru}}" placeholder="Jurnal" readonly>
+                              <input type="text" class="form-control" id="" placeholder="Jurnal">
                             </div>
                           </div>
                           <div class="form-group row">
@@ -65,7 +64,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="col-sm-8">
                               <div class="input-group date" id="reservationdate1" data-target-input="nearest">
                                 <input type="text" class="form-control datetimepicker-input"
-                                  data-target="#reservationdate1" id="date" name="date" />
+                                  data-target="#reservationdate1" />
                                 <div class="input-group-append" data-target="#reservationdate1"
                                   data-toggle="datetimepicker">
                                   <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -76,22 +75,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <div class="form-group row">
                             <label for="" class="col-sm-4 col-form-label">Document</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="document" name="document"
-                                placeholder="Document">
+                              <input type="" class="form-control" id="" placeholder="Document">
                             </div>
                           </div>
                           <div class="form-group row">
                             <label for="" class="col-sm-4 col-form-label">Reference</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="reference" name="reference"
-                                placeholder="Reference">
+                              <input type="" class="form-control" id="" placeholder="Reference">
                             </div>
                           </div>
                           <div class="form-group row">
                             <label for="" class="col-sm-4 col-form-label">Description</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="description" name="description"
-                                placeholder="Description">
+                              <input type="" class="form-control" id="" placeholder="Description">
                             </div>
                           </div>
                         </div>
@@ -159,31 +155,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </tr>
                     </tfoot>
                 </table>
-                <div class="card-footer">
-                  <div style="display: flex; gap: 5px; justify-content: flex-end">
-
-                    <div>
-                      <button type="submit" id="draft-button" class="btn btn-primary" style="float: right"><i
-                          class="fas fa-file-alt"></i>
-                        Simpan Draft </button>
-                      <script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                          document.getElementById("draft-button").addEventListener("click", function() {
-                          document.getElementById("form1").submit();
-                          alert("Data telah tersimpan!");
-                          });
-                          });
-                      </script>
-                    </div>
-                    <div>
-                      <button type="submit" id="simpan-button" class="btn btn-primary" style="float: right"><i
-                          class="fas fa-save"></i>
-                        Simpan </button>
-                    </div>
-                  </div>
-
-                </div>
-
                 <!-- /.card -->
               </div>
               <!-- /.col -->
@@ -217,14 +188,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   @include('template.script')
 
 </body>
-
-
-<div>
-  <button type="submit" id="draft-button" class="btn btn-primary" style="float: right"><i class="fas fa-file-alt"></i>
-    Simpan Draft </button>
-  <button type="submit" id="simpan-button" class="btn btn-primary" style="float: right"><i class="fas fa-save"></i>
-    Simpan </button>
-</div>
 <script>
   document.addEventListener("click", function(event) {
 if (event.target.classList.contains("hapus-baris")) {
@@ -266,9 +229,6 @@ function sumDebit() {
   var sumDeb = sumDebit();
   var sumKre = sumKredit();
   var selisih = sumDeb - sumKre;
-  if (selisih < 0) {
-    selisih = "(" + Math.abs(selisih) + ")";
-  }
   document.getElementById("selisih").innerHTML = selisih;
 }
 
@@ -278,7 +238,6 @@ function sumDebit() {
       updateSelisih();
     }
   });
-
 
   document.getElementById("tambah-baris").addEventListener("click", function() {
         var table = document.getElementById("tabel");
@@ -296,54 +255,21 @@ function sumDebit() {
         } else {
         cell1.innerHTML = "";
         }
-        cell2.innerHTML = "<select name='coa[]'  > @foreach($dtCoa as $item) <option value='{{ $item->akun_coa }}'>{{ $item->akun_coa }} - {{$item->nama_coa}} </option>@endforeach</select>";
-        cell3.innerHTML = "<input type='text' name='namacoa[]' value='Asset' readonly >";
-        // Menambahkan event listener untuk elemen select dengan name "coa[]"
-        document.addEventListener("change", function(event) {
-        if (event.target.name === "coa[]") {
-        var selectElement = event.target;
-        var selectedValue = selectElement.value;
-        var selectedOption = selectElement.options[selectElement.selectedIndex];
-        var namaCoa = selectedOption.textContent.split(" - ")[1];
-        var row = selectElement.parentNode.parentNode;
-        var cell3 = row.cells[2];
-        cell3.innerHTML = "<input type='text' name='namacoa[]' value='" + namaCoa + "' readonly>";
-        }
-        });
-        if (cell4.innerHTML.trim() == '' && cell5.innerHTML.trim() == '') {
-        cell4.innerHTML = "<input type='number' name='debit[]' value='0' onfocus='removeZero(this)' onblur='addZero(this)'>";
-        cell5.innerHTML = "<input type='number' name='kredit[]' value='0' onfocus='removeZero(this)' onblur='addZero(this)'>";
-    } else {
+        cell2.innerHTML = "<select name='coa[]'> @foreach($dtCoa as $item) <option value='{{ $item->akun_coa }}'>{{ $item->akun_coa }} - {{$item->nama_coa}} </option>@endforeach</select>";
+        cell3.innerHTML = "<input type='text' name='namacoa[]'>";
         cell4.innerHTML = "<input type='number' name='debit[]'>";
         cell5.innerHTML = "<input type='number' name='kredit[]'>";
-    }
-        // cell4.innerHTML = "<input type='number' name='debit[]' >";
-        // cell5.innerHTML = "<input type='number' name='kredit[]'>";
-        
-        cell6.innerHTML = "<input type='text' name='departemen[]'>";
+        cell6.innerHTML = "<input type='text' name='alamat[]'>";
         cell7.innerHTML= "<button class='btn btn-block bg-gradient-danger btn-xs hapus-baris' data-toggle='modal' data-target='#modalHapus' ><i class='fas fa-trash'></i> Hapus</button>"
         updateSum();
         updateSelisih();
     });
-function removeZero(input) {
-if (input.value === '0') {
-input.value = '';
-}
-}
 
-function addZero(input) {
-if (input.value === '') {
-input.value = '0';
-}
-}
     document.addEventListener("DOMContentLoaded", function() {
     updateSum();
     updateSelisih();
     });
     
-
-    
 </script>
-
 
 </html>

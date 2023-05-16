@@ -189,9 +189,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $coa->akun_coa }}</td>
                                                 <td>{{ $coa->nama_coa }}</td>
-                                                <td class="saldo-awal "> {{$coa->saldoCoa ?
-                                                    // 'Rp. ' .
-                                                    number_format($coa->saldoCoa->saldo_awal,0,',','.') : '' }}
+                                                <td class="saldo-awal "> @if ($coa->saldoCoa &&
+                                                    $coa->saldoCoa->saldo_awal < 0) ({{ number_format(abs($coa->
+                                                        saldoCoa->saldo_awal),0,',','.') }})
+                                                        @else
+                                                        {{ $coa->saldoCoa ?
+                                                        number_format($coa->saldoCoa->saldo_awal,0,',','.') : '' }}
+                                                        @endif
                                                 </td>
                                                 {{-- <td>{{ $coa->saldoCoa->tanggal }}</td> --}}
                                                 {{-- <td>-</td>
@@ -295,7 +299,7 @@ let totalSaldo = 0;
 // menjumlahkan nilai dari setiap elemen td saldo-awal
 saldoAwalElements.forEach((saldoAwalElement) => {
 const saldoAwal = saldoAwalElement.textContent.replace(/\D/g, ''); // menghapus karakter selain angka
-if (saldoAwalElement.textContent.includes('-')) {
+if (saldoAwalElement.textContent.includes('(') && saldoAwalElement.textContent.includes(')')) {
 totalSaldo -= parseInt(saldoAwal); // menggunakan operator pengurangan
 } else {
 totalSaldo += parseInt(saldoAwal); // menggunakan operator penjumlahan

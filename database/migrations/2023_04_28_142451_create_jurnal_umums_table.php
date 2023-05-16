@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jurnal_umums', function (Blueprint $table) {
             $table->id();
             $table->string('no_jurnal');
-            $table->date('tanggal');
+            $table->date('tanggal')->nullable();
             $table->string('no_dokumen');
             $table->string('no_referensi');
             $table->string('keterangan');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('debit');
             $table->bigInteger('kredit');
             $table->string('dept_name');
+            $table->enum('status', ['DRAF','NONDRAF'])->default('DRAF');
             $table->timestamps();
         });
     }
